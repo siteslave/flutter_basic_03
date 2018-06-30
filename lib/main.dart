@@ -14,11 +14,16 @@ class _BasicWidgetsState extends State<BasicWidgets> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle myStyle = TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
+    TextStyle myStyle = TextStyle(
+      fontSize: 25.0,
+    );
 
     // Step 0
     AppBar appBar = AppBar(
-      title: Text('Basic Scaffold'),
+      title: Text(
+        'พื้นฐาน Widgets',
+        style: myStyle,
+      ),
       actions: <Widget>[
         IconButton(
             icon: Icon(Icons.account_circle),
@@ -91,15 +96,21 @@ class _BasicWidgetsState extends State<BasicWidgets> {
         ));
 
     return MaterialApp(
-      title: 'Basic widgets',
-      theme: ThemeData(primaryColor: Colors.purple),
+      title: 'พื้นฐาน Widgets',
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+        fontFamily: 'Lamoon',
+      ),
       home: Scaffold(
         appBar: appBar,
         body: pages[pageIndex],
 //        floatingActionButton: floatingActionButton,
         floatingActionButton: FloatingActionButton.extended(
           icon: const Icon(Icons.add),
-          label: const Text('Add'),
+          label: const Text(
+            'เพิ่ม',
+            style: TextStyle(fontSize: 25.0),
+          ),
           backgroundColor: Colors.purple,
           onPressed: () {},
         ),
@@ -115,7 +126,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Home page'),
+      child: Text('หน้าหลัก'),
     );
   }
 }
@@ -124,7 +135,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Account page'),
+      child: Text('จัดการข้อมูลส่วนตัว'),
     );
   }
 }
@@ -133,7 +144,7 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Setting page'),
+      child: Text('ตั้งค่าการใช้งาน'),
     );
   }
 }
