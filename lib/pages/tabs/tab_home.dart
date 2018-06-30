@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class TabHome extends StatefulWidget {
   @override
@@ -6,22 +10,58 @@ class TabHome extends StatefulWidget {
 }
 
 class _TabHomeState extends State<TabHome> {
+  List users = [];
+  bool loading = true;
+
+  Future<Null> _getUsers() async {
+    String url =
+        'https://randomuser.me/api/?results=20&inc=gender,name,email,picture';
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse['results']);
+
+      loading = false;
+
+      setState(() {
+        users = jsonResponse['results'];
+      });
+    } else {
+      print('error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return FlatButton(
-            onPressed: () {},
-            child: ListTile(
-              title: Text(
-                'User index $index',
-                style: TextStyle(fontSize: 20.5),
-              ),
-              subtitle: Text('yyyyyyy'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-            ));
-      },
-      itemCount: 10,
-    );
+    return loading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return FlatButton(
+                  onPressed: () {},
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(users[index]['picture']['medium']),
+                    ),
+                    title: Text(
+                      '${users[index]['name']['title']} ${users[index]['name']['first']} ${users[index]['name']['last']}',
+                      style: TextStyle(fontSize: 20.5),
+                    ),
+                    subtitle: Text(users[index]['email']),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                  ));
+            },
+            itemCount: users != null ? users.length : 0,
+          );
   }
 }
