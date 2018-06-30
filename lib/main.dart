@@ -2,6 +2,7 @@ import 'package:basic_widgets/pages/add_page.dart';
 import 'package:basic_widgets/pages/home_page.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
 import 'package:basic_widgets/pages/account_page.dart';
+import 'package:basic_widgets/pages/tab_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(BasicWidgets());
@@ -25,6 +26,6 @@ class _BasicWidgetsState extends State<BasicWidgets> {
           '/setting': (BuildContext context) => SettingPage(),
           '/add': (BuildContext context) => AddPage(),
         },
-        home: HomePage());
+        home: TabPage());
   }
 }
