@@ -1,5 +1,5 @@
 import 'package:basic_widgets/pages/add_page.dart';
-import 'package:basic_widgets/pages/home_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
 import 'package:basic_widgets/pages/account_page.dart';
 import 'package:basic_widgets/pages/tab_page.dart';
@@ -21,6 +21,14 @@ class _BasicWidgetsState extends State<BasicWidgets> {
           primaryColor: Colors.purple,
           fontFamily: 'Lamoon',
         ),
+        localizationsDelegates: [
+          // ... app-specific localization delegate[s] here
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('th', 'TH'),
+        ],
         routes: <String, WidgetBuilder>{
           '/account': (BuildContext context) => AccountPage(1),
           '/setting': (BuildContext context) => SettingPage(),
