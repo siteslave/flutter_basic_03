@@ -16,19 +16,28 @@ class _TabHomeState extends State<TabHome> {
   Future<Null> _getUsers() async {
     String url =
         'https://randomuser.me/api/?results=20&inc=gender,name,email,picture';
-    var response = await http.get(url);
+    try {
+      var response = await http.get(url);
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      print(jsonResponse['results']);
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        print(jsonResponse['results']);
 
-      loading = false;
-
+        setState(() {
+          loading = false;
+          users = jsonResponse['results'];
+        });
+      } else {
+        setState(() {
+          loading = false;
+        });
+        print('error');
+      }
+    } catch (error) {
+      print(error);
       setState(() {
-        users = jsonResponse['results'];
+        loading = false;
       });
-    } else {
-      print('error');
     }
   }
 
