@@ -125,9 +125,44 @@ class _BasicWidgetsState extends State<BasicWidgets> {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('หน้าหลัก'),
+    Row rowWidget = Row(
+      children: <Widget>[
+        Expanded(
+            child: Container(
+          color: Colors.orange,
+        )),
+        Expanded(
+            child: Container(
+          color: Colors.pink,
+        )),
+        Expanded(
+            child: Container(
+          color: Colors.teal,
+        )),
+      ],
     );
+
+    Column columnWidget = Column(
+      children: <Widget>[
+        Container(
+          color: Colors.red,
+          height: 100.0,
+        ),
+        Container(
+          color: Colors.green,
+          height: 100.0,
+        ),
+        Container(
+          color: Colors.blue,
+          height: 100.0,
+        ),
+        Expanded(
+          child: rowWidget,
+        )
+      ],
+    );
+
+    return columnWidget;
   }
 }
 
