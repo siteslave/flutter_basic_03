@@ -3,9 +3,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
 import 'package:basic_widgets/pages/account_page.dart';
 import 'package:basic_widgets/pages/tab_page.dart';
+import 'package:basic_widgets/utils/database_helper.dart';
+
 import 'package:flutter/material.dart';
 
-void main() => runApp(BasicWidgets());
+void main() async {
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
+  databaseHelper.initDatabase();
+
+  runApp(BasicWidgets());
+}
 
 class BasicWidgets extends StatefulWidget {
   @override
@@ -32,7 +39,7 @@ class _BasicWidgetsState extends State<BasicWidgets> {
         routes: <String, WidgetBuilder>{
           '/account': (BuildContext context) => AccountPage(1),
           '/setting': (BuildContext context) => SettingPage(),
-          '/add': (BuildContext context) => AddPage(),
+          '/add': (BuildContext context) => AddPage(null),
         },
         home: TabPage());
   }

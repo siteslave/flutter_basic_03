@@ -11,7 +11,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   http: "^0.11.3+16"
-
+  sqflite: any
+  path_provider: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

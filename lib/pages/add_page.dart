@@ -1,15 +1,26 @@
+import 'package:basic_widgets/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:intl/intl.dart';
 
 class AddPage extends StatefulWidget {
+  int id;
+
+  AddPage(this.id);
+
   @override
-  _AddPageState createState() => _AddPageState();
+  _AddPageState createState() => _AddPageState(this.id);
 }
 
 class _AddPageState extends State<AddPage> {
+  int id;
+
+  _AddPageState(this.id);
+
   DateTime dateBirthDate;
+
+  DatabaseHelper databaseHelper = DatabaseHelper.internal();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,9 +41,11 @@ class _AddPageState extends State<AddPage> {
     DateTime _birthDate = await showDatePicker(
         // locale: const Locale('th'),
         context: context,
-        initialDate: DateTime(_currentDate.year),
+        initialDate:
+            DateTime(_currentDate.year, _currentDate.month, _currentDate.day),
         firstDate: DateTime(_currentDate.year - 100),
-        lastDate: DateTime(_currentDate.year));
+        lastDate:
+            DateTime(_currentDate.year, _currentDate.month, _currentDate.day));
 
     if (_birthDate != null) {
       setState(() {
@@ -53,6 +66,69 @@ class _AddPageState extends State<AddPage> {
     return null;
   }
 
+  String _validatePhoneNumber(String value) {
+    final RegExp phoneExp = new RegExp(r'^\(\d\d\d\) \d\d\d\-\d\d\d\d$');
+    if (!phoneExp.hasMatch(value))
+      return '(###) ###-#### - Enter a US phone number.';
+    return null;
+  }
+
+  Future<Null> _saveData() async {
+    Member member = new Member();
+    if (id != null) {
+      member.id = id;
+    }
+    member.first_name = _ctrlFirstName.text;
+    member.last_name = _ctrlLastName.text;
+    member.email = _ctrlEmail.text;
+    member.telephone = _ctrlTelephone.text;
+    member.birth_date = dateBirthDate.toString();
+
+    if (id != null) {
+      await databaseHelper.updateMember(member);
+    } else {
+      await databaseHelper.saveMember(member);
+    }
+
+    Navigator.of(context).pop({"refresh": true});
+  }
+
+  Future<Null> _getDetail(int id) async {
+    var member = await databaseHelper.getDetail(id);
+
+    _ctrlFirstName.text = member[0]['first_name'];
+    _ctrlLastName.text = member[0]['last_name'];
+    _ctrlBirthDate.text = member[0]['birth_date'];
+    _ctrlEmail.text = member[0]['email'];
+    _ctrlTelephone.text = member[0]['telephone'];
+
+    var date = DateTime.parse(member[0]['birth_date']);
+    var strDate =
+        new DateFormat.MMMMd('th_TH').format(date) + ' ${date.year + 543}';
+    _ctrlBirthDate.text = strDate;
+    dateBirthDate = date;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (id != null) {
+      _getDetail(id);
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _ctrlTelephone.dispose();
+    _ctrlEmail.dispose();
+    _ctrlLastName.dispose();
+    _ctrlFirstName.dispose();
+    _ctrlBirthDate.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +138,7 @@ class _AddPageState extends State<AddPage> {
             IconButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  print('Ok');
+                  _saveData();
                 } else {
                   print('Failed');
                 }
