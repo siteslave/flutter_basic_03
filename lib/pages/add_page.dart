@@ -11,6 +11,8 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   DateTime dateBirthDate;
 
+  final _formKey = GlobalKey<FormState>();
+
   String strFirstName;
   String strLastName;
   String strEmail;
@@ -42,6 +44,15 @@ class _AddPageState extends State<AddPage> {
     }
   }
 
+  String _validateEmail(String value) {
+    if (value.isEmpty) return 'กรุณาระบุอีเมล์';
+
+    final RegExp nameExp = new RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+    if (!nameExp.hasMatch(value)) return 'กรุณาระบุให้ถูกรูปแบบ';
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,71 +60,100 @@ class _AddPageState extends State<AddPage> {
           title: Text('เพิ่มผู้ใช้งาน'),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  print('Ok');
+                } else {
+                  print('Failed');
+                }
+              },
               icon: Icon(Icons.save),
             )
           ],
         ),
-        body: ListView(
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      onFieldSubmitted: (String value) {},
-                      controller: _ctrlFirstName,
-                      decoration: InputDecoration(labelText: 'ชื่อ'),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: _ctrlLastName,
-                      decoration: InputDecoration(
-                        labelText: 'สกุล',
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'กรุณาระบุชื่อ';
+                          }
+                        },
+                        controller: _ctrlFirstName,
+                        decoration: InputDecoration(labelText: 'ชื่อ'),
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _ctrlBirthDate,
-                decoration: InputDecoration(
-                    labelText: 'วันเกิด',
-                    suffixIcon: GestureDetector(
-                      child: Icon(Icons.date_range),
-                      onTap: () => _showDatePicker(),
-                    )),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'ระบุนามสกุล';
+                          }
+                        },
+                        controller: _ctrlLastName,
+                        decoration: InputDecoration(
+                          labelText: 'สกุล',
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _ctrlEmail,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'อีเมล์',
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _ctrlBirthDate,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'ระบุวันเกิด';
+                    }
+                  },
+                  decoration: InputDecoration(
+                      labelText: 'วันเกิด',
+                      suffixIcon: GestureDetector(
+                        child: Icon(Icons.date_range),
+                        onTap: () => _showDatePicker(),
+                      )),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _ctrlTelephone,
-                keyboardType: TextInputType.phone,
-                decoration:
-                    InputDecoration(labelText: 'โทรศัพท์', hintText: ''),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  validator: _validateEmail,
+                  controller: _ctrlEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'อีเมล์',
+                  ),
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'ระบุหมายเลขโทรศัพท์';
+                    }
+                  },
+                  controller: _ctrlTelephone,
+                  keyboardType: TextInputType.phone,
+                  decoration:
+                      InputDecoration(labelText: 'โทรศัพท์', hintText: ''),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }
