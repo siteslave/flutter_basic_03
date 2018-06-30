@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'package:basic_widgets/pages/tabs/tab_account.dart';
-import 'package:basic_widgets/pages/tabs/tab_home.dart';
-import 'package:basic_widgets/pages/tabs/tab_setting.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
 import 'package:flutter/material.dart';
 
@@ -35,9 +32,9 @@ class _TabPageState extends State<TabPage> {
           ),
           body: TabBarView(
             children: [
-              TabHome(),
-              TabAccount(),
-              TabSetting(),
+              Icon(Icons.home),
+              Icon(Icons.account_circle),
+              Icon(Icons.settings),
             ],
           ),
           drawer: Drawer(
@@ -69,6 +66,7 @@ class _TabPageState extends State<TabPage> {
                   leading: Icon(Icons.settings),
                   title: Text('ตั้งค่าการใช้งาน'),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SettingPage()));
                   },
