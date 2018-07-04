@@ -1,4 +1,5 @@
 import 'package:basic_widgets/pages/add_page.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
 import 'package:basic_widgets/pages/account_page.dart';
@@ -7,19 +8,29 @@ import 'package:basic_widgets/utils/database_helper.dart';
 
 import 'package:flutter/material.dart';
 
+List<CameraDescription> cameras;
+
 void main() async {
   DatabaseHelper databaseHelper = DatabaseHelper.internal();
   databaseHelper.initDatabase();
+  cameras = await availableCameras();
 
-  runApp(BasicWidgets());
+  runApp(BasicWidgets(cameras));
 }
 
 class BasicWidgets extends StatefulWidget {
+  List<CameraDescription> cameras;
+
+  BasicWidgets(this.cameras);
   @override
-  _BasicWidgetsState createState() => _BasicWidgetsState();
+  _BasicWidgetsState createState() => _BasicWidgetsState(this.cameras);
 }
 
 class _BasicWidgetsState extends State<BasicWidgets> {
+  List<CameraDescription> cameras;
+
+  _BasicWidgetsState(this.cameras);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,6 +52,6 @@ class _BasicWidgetsState extends State<BasicWidgets> {
           '/setting': (BuildContext context) => SettingPage(),
           '/add': (BuildContext context) => AddPage(null),
         },
-        home: TabPage());
+        home: TabPage(cameras));
   }
 }

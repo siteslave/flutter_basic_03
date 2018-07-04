@@ -13,6 +13,7 @@ dependencies:
   http: "^0.11.3+16"
   sqflite: any
   path_provider: any
+  camera: "^0.2.1"
 dev_dependencies:
   flutter_test:
     sdk: flutter

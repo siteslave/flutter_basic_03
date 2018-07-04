@@ -3,14 +3,22 @@ import 'package:basic_widgets/pages/tabs/tab_account.dart';
 import 'package:basic_widgets/pages/tabs/tab_home.dart';
 import 'package:basic_widgets/pages/tabs/tab_setting.dart';
 import 'package:basic_widgets/pages/setting_page.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class TabPage extends StatefulWidget {
+  List<CameraDescription> cameras;
+
+  TabPage(this.cameras);
+
   @override
-  _TabPageState createState() => _TabPageState();
+  _TabPageState createState() => _TabPageState(this.cameras);
 }
 
 class _TabPageState extends State<TabPage> {
+  List<CameraDescription> cameras;
+  _TabPageState(this.cameras);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -37,7 +45,7 @@ class _TabPageState extends State<TabPage> {
             children: [
               TabHome(),
               TabAccount(),
-              TabSetting(),
+              TabSetting(cameras),
             ],
           ),
           drawer: Drawer(

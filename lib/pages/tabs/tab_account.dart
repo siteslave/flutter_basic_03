@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:basic_widgets/pages/add_page.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_widgets/utils/database_helper.dart';
