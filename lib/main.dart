@@ -143,22 +143,23 @@ class HomePage extends StatelessWidget {
     );
 
     Column columnWidget = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
           color: Colors.red,
           height: 100.0,
         ),
-        Container(
-          color: Colors.green,
-          height: 100.0,
-        ),
+//        Container(
+//          color: Colors.green,
+//          height: 100.0,
+//        ),
         Container(
           color: Colors.blue,
           height: 100.0,
         ),
-        Expanded(
-          child: rowWidget,
-        )
+//        Expanded(
+//          child: rowWidget,
+//        )
       ],
     );
 
